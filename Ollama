@@ -1,1 +1,4 @@
 https://ollama.com/download
+Linux Install-
+Copy paste the following into the command terminal: curl -fsSL https://ollama.com/install.sh | sh
+Do the same for updating.
