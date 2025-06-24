@@ -1,0 +1,8 @@
+[package]
+name = "desk_assistant"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+soloud = "1"
+notify = "8.0.0"
