@@ -10,7 +10,7 @@ from time import sleep
 from sys import platform
 
 
-class RealTimeTranscriber:
+class RealTimeTranscriber: #STT
     def __init__(self, model="tiny", non_english=False, energy_threshold=1000, 
                  record_timeout=2, phrase_timeout=2, default_microphone='pulse'):
         self.model_name = model
