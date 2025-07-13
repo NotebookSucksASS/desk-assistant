@@ -21,13 +21,13 @@ class RealTimeTranscriber:
         self.default_microphone = default_microphone
         
         # State variables
-        self.phrase_time = None
-        self.data_queue = Queue()
-        self.phrase_bytes = bytes()
+        self.phrase_time = None # The last time a recording was retrieved from the queue.
+        self.data_queue = Queue() # Thread safe Queue for passing data from the threaded recording callback.
+        self.phrase_bytes = bytes() # Bytes object which holds audio data for the current phrase
         self.transcription = ['']
         self.stop_listening = None
         self.phrase_complete = False
-        self.first_phrase_completed = False #Constant check of phrase complete, so need a flag
+        self.first_phrase_completed = False #Constant check of phrase complete, so need a flag to prevent running more than once
         
         # Initialize components
         self.recorder = None 
@@ -122,22 +122,20 @@ class RealTimeTranscriber:
         
         return True
     
-    def check_phrase_complete(self):
+    def check_phrase_complete(self): #Check if user finished prompt
         now = datetime.utcnow()
 
         self.phrase_complete = False
         
         # Check if enough time has passed to consider phrase complete
-        if self.phrase_time and now - self.phrase_time > timedelta(seconds=self.phrase_timeout):
+        if self.phrase_time and now - self.phrase_time > timedelta(seconds=self.phrase_timeout): #Check if user has not spoken for more than phrase timeout (3s)
             self.phrase_bytes = bytes()
             self.phrase_complete = True
         
         if self.phrase_complete:
             return True
-            print("Phrase Complete")
         else: 
             return False
-            print("Phrase Incomplete")
 
     
     def display_transcription(self):
@@ -162,18 +160,18 @@ class RealTimeTranscriber:
                 try:
                     print(self.check_phrase_complete())
                     if self.check_phrase_complete(): #Check if 2 seconds has passed since last speech
-                        if self.first_phrase_completed == False:
+                        if self.first_phrase_completed == False: #Prevent bottom code running more than once
                             self.stop_recording()
-                            filename = f"prompt_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt"
+                            filename = f"prompt_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt" #Save prompt as txt
                             with open(f"stt/prompts/{filename}", "w") as f:
                                 f.write(self.transcription[-1])
                             input("Prompt recorded, press enter to continue")
                             self.start_listening()
-                            self.phrase_complete = False
+                            self.phrase_complete = False #Reset variables for next prompts
                             self.phrase_time = None
                             self.first_phrase_completed = False
                             continue 
-                        self.first_phrase_completed = True
+                        self.first_phrase_completed = True #Prevent code running more than once
 
                     if self.process_audio_queue() and not self.check_phrase_complete():
                         self.display_transcription()
