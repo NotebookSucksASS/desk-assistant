@@ -158,7 +158,6 @@ class RealTimeTranscriber:
             # Main processing loop
             while True:
                 try:
-                    print(self.check_phrase_complete())
                     if self.check_phrase_complete(): #Check if 2 seconds has passed since last speech
                         if self.first_phrase_completed == False: #Prevent bottom code running more than once
                             self.stop_recording()
