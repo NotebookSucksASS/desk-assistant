@@ -162,7 +162,7 @@ class RealTimeTranscriber:
                         if self.first_phrase_completed == False: #Prevent bottom code running more than once
                             self.stop_recording()
                             filename = f"prompt_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt" #Save prompt as txt
-                            with open(f"stt/prompts/{filename}", "w") as f:
+                            with open(f"./prompts/{filename}", "w") as f:
                                 f.write(self.transcription[-1])
                             input("Prompt recorded, press enter to continue")
                             self.start_listening()
