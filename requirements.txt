@@ -5,3 +5,5 @@ SpeechRecognition
 torch
 numpy
 git+https://github.com/openai/whisper.git
+ollama
+piper-tts

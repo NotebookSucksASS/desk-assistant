@@ -1,3 +1,4 @@
+"""Do pip install -r requirements.txt to install all dependencies"""
 import ollama
 import time
 import os
