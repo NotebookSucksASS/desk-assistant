@@ -4,7 +4,7 @@ import time
 import os
 import subprocess
 import tempfile
-from piper_tts import speak_with_piper #Piper TTS stored in another file
+from piper_tts import speak_with_piper #piper stored in another file
 
 model = 'mannix/llama3.1-8b-abliterated:latest'
 
