@@ -11,19 +11,19 @@ def speak_with_piper(text, server_url="http://localhost:5000"):
         server_url (str): URL of the Piper HTTP server (default: http://localhost:5000)
     """
     try:
-        with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_file:
+        with tempfile.NamedTemporaryFile(suffix='.wav', delete=False) as temp_file: #Create temporary file with wav extension
             temp_wav = temp_file.name
         
         # Send POST request to Piper HTTP server
         payload = {'text': text}
         headers = {'Content-Type': 'application/json'}
         
-        response = requests.post(server_url, json=payload, headers=headers)
+        response = requests.post(server_url, json=payload, headers=headers) #Sends input to external piper server to recieve back audio files
         
         if response.status_code == 200:
             # Save the audio data to temp file
             with open(temp_wav, 'wb') as f:
-                for chunk in response.iter_content(chunk_size=128):
+                for chunk in response.iter_content(chunk_size=128): #Writes audio data in 128 byte chunks into temm_wav
                     f.write(chunk)
             
             # Play audio
