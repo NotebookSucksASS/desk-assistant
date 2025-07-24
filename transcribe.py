@@ -145,12 +145,7 @@ class RealTimeTranscriber:
         for line in self.transcription:
             print(line)
         print('', end='', flush=True)
-    
-    def get_transcribed_string(self):
-        """Return string output of transcription"""
-        if self.check_phrase_complete():
-            output = self.transcription[-1]
-            return output
+
 
     def run(self):
         """Main transcription loop"""
@@ -167,7 +162,6 @@ class RealTimeTranscriber:
                 try:
                     if self.check_phrase_complete(): #Check if 2 seconds has passed since last speech
                         if self.first_phrase_completed == False: #Prevent bottom code running more than once
-                            self.stop_recording()
 
                             transcribed_text = self.transcription[-1]
                             if (self.transcription_callback and transcribed_text.strip):
@@ -176,9 +170,7 @@ class RealTimeTranscriber:
                             filename = f"prompt_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt" #Save prompt as txt
                             with open(f"./prompts/{filename}", "w") as f:
                                 f.write(transcribed_text)
-                            input("Prompt recorded, press enter to continue")
                     
-                            self.start_listening()
                             self.phrase_complete = False #Reset variables for next prompts
                             self.phrase_time = None
                             self.first_phrase_completed = False
@@ -200,16 +192,12 @@ class RealTimeTranscriber:
         for line in self.transcription:
             print(line)
     
-    def get_transcription(self):
-        """Get current transcription as list of strings"""
-        return self.transcription.copy()
-    
     def clear_transcription(self):
         """Clear current transcription"""
         self.transcription = ['']
 
-
-def main():
+"""Standalaone Script"""
+"""def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", default="tiny", help="Model to use",
                         choices=["tiny", "base", "small", "medium", "large"])
@@ -238,8 +226,8 @@ def main():
         default_microphone=getattr(args, 'default_microphone', 'pulse')
     )
     
-    transcriber.run()
+    transcriber.run() 
 
 
 if __name__ == "__main__":
-    main()
+    main()"""

@@ -24,7 +24,6 @@ def transcription_callback(text):
     """Callback to handle completed transcriptions"""
     if text.strip():
         text_queue.put(text)
-        print(f"Added to queue: {text}")
 
 def whisper_thread():
     """Thread for running Whisper transcription"""
@@ -37,7 +36,7 @@ def whisper_thread():
                         help="Energy level for mic to detect.", type=int)
     parser.add_argument("--record_timeout", default=2,
                         help="How real time the recording is in seconds.", type=float)
-    parser.add_argument("--phrase_timeout", default=3,
+    parser.add_argument("--phrase_timeout", default=1,
                         help="How much empty space between recordings before we "
                              "consider it a new line in the transcription.", type=float)
     if 'linux' in platform:
