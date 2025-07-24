@@ -9,7 +9,7 @@ brew install ollama portaudio ffmpeg  # macOS
 ### or
 sudo apt-get install portaudio19-dev python3-pyaudio alsa-utils ffmpeg  # Linux
 
-#### 2. Install Python dependencies
+### 2. Install Python dependencies
 pip install -r requirements.txt
 
 ### 3. Pull the Ollama model
