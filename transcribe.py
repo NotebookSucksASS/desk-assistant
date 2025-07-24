@@ -177,10 +177,12 @@ class RealTimeTranscriber:
                             continue 
                         self.first_phrase_completed = True #Prevent code running more than once
 
-                    if self.process_audio_queue() and not self.check_phrase_complete():
+                    audio_processed = self.process_audio_queue()
+                    if audio_processed:
                         self.display_transcription()
                     else:
                         sleep(0.25)
+
                 except KeyboardInterrupt:
                     break
                     
