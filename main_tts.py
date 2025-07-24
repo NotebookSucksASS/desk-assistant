@@ -82,8 +82,7 @@ def handle_conversation():
         audio_thread.start()
 
 
-def get_input_with_timeout():
-    """Get user input with ability to detect when input is available"""
+"""def get_input_with_timeout():
     input_queue = queue.Queue()
     
     def input_thread():
@@ -96,7 +95,7 @@ def get_input_with_timeout():
     thread = threading.Thread(target=input_thread, daemon=True)
     thread.start()
     
-    return input_queue
+    return input_queue"""
 
 
 if __name__ == "__main__":
