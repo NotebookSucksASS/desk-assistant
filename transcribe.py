@@ -12,13 +12,14 @@ from sys import platform
 
 class RealTimeTranscriber: 
     def __init__(self, model="tiny", non_english=False, energy_threshold=1000, 
-                 record_timeout=2, phrase_timeout=2, default_microphone='pulse'):
+                 record_timeout=2, phrase_timeout=2, default_microphone='pulse', transcription_callback = None):
         self.model_name = model
         self.non_english = non_english
         self.energy_threshold = energy_threshold
         self.record_timeout = record_timeout
         self.phrase_timeout = phrase_timeout
         self.default_microphone = default_microphone
+        self.transcription_callback = transcription_callback
         
         # State variables
         self.phrase_time = None # The last time a recording was retrieved from the queue.
@@ -145,6 +146,12 @@ class RealTimeTranscriber:
             print(line)
         print('', end='', flush=True)
     
+    def get_transcribed_string(self):
+        """Return string output of transcription"""
+        if self.check_phrase_complete():
+            output = self.transcription[-1]
+            return output
+
     def run(self):
         """Main transcription loop"""
         try:
@@ -161,10 +168,16 @@ class RealTimeTranscriber:
                     if self.check_phrase_complete(): #Check if 2 seconds has passed since last speech
                         if self.first_phrase_completed == False: #Prevent bottom code running more than once
                             self.stop_recording()
+
+                            transcribed_text = self.transcription[-1]
+                            if (self.transcription_callback and transcribed_text.strip):
+                                self.transcription_callback(transcribed_text)
+
                             filename = f"prompt_{datetime.now().strftime('%Y-%m-%d_%H-%M-%S')}.txt" #Save prompt as txt
                             with open(f"./prompts/{filename}", "w") as f:
-                                f.write(self.transcription[-1])
+                                f.write(transcribed_text)
                             input("Prompt recorded, press enter to continue")
+                    
                             self.start_listening()
                             self.phrase_complete = False #Reset variables for next prompts
                             self.phrase_time = None
